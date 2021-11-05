@@ -18,24 +18,28 @@ async function main() {
   console.log("wallet publicKey", currentKp.publicKey.toBase58());
 
   for (let i = 0; i < wallets.length; i++) {
-    const w = wallets[i];
-    console.log(`sending ${w.amount} x ${w.token} to ${w.wallet}`);
+    try {
+      const w = wallets[i];
+      console.log(`sending ${w.amount} x ${w.token} to ${w.wallet}`);
 
-    // console.log(`creating token`);
-    var tkn = new Token(connection, new PublicKey(w.token), TOKEN_PROGRAM_ID, currentKp);
+      // console.log(`creating token`);
+      var tkn = new Token(connection, new PublicKey(w.token), TOKEN_PROGRAM_ID, currentKp);
 
-    // console.log(`creating from account`);
-    const fromAccount = await tkn.getOrCreateAssociatedAccountInfo(currentKp.publicKey);
-    // console.log(`from account: `, fromAccount);
+      // console.log(`creating from account`);
+      const fromAccount = await tkn.getOrCreateAssociatedAccountInfo(currentKp.publicKey);
+      // console.log(`from account: `, fromAccount);
 
-    // console.log(`creating to account`);
-    const toAccount = await tkn.getOrCreateAssociatedAccountInfo(new PublicKey(w.wallet));
-    // console.log(`to account: `, toAccount);
+      // console.log(`creating to account`);
+      const toAccount = await tkn.getOrCreateAssociatedAccountInfo(new PublicKey(w.wallet));
+      // console.log(`to account: `, toAccount);
 
-    // console.log(`sending`);
-    const res = await tkn.transfer(fromAccount.address, toAccount.address, currentKp.publicKey, [], w.amount);
+      // console.log(`sending`);
+      const res = await tkn.transfer(fromAccount.address, toAccount.address, currentKp.publicKey, [], w.amount);
 
-    console.log(`\tres:  ${res}`);
+      console.log(`\tres:  ${res}`);
+    } catch (err) {
+      console.error(err);
+    }
   }
 }
 
