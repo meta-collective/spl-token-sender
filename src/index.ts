@@ -1,20 +1,14 @@
-import { Connection, Keypair, PublicKey } from "@solana/web3.js";
+import { AccountInfo, Connection, Keypair, PublicKey } from "@solana/web3.js";
 import wallets from "./wallets.json";
+import config from "./config.json";
 import { Token, TOKEN_PROGRAM_ID } from "@solana/spl-token";
-
-const SECRET_KEY = [
-  159, 186, 46, 124,
-  // ....
-];
-
-const ENDPOINT = "https://api.devnet.solana.com";
 
 async function main() {
   console.log("creating connection");
-  var connection = new Connection(ENDPOINT, "recent");
+  var connection = new Connection(config.endpoint, "recent");
 
   console.log("creating keypair from secret key");
-  var currentKp = Keypair.fromSecretKey(Uint8Array.from(SECRET_KEY));
+  var currentKp = Keypair.fromSecretKey(Uint8Array.from(config.secretKey));
   console.log("wallet publicKey", currentKp.publicKey.toBase58());
 
   for (let i = 0; i < wallets.length; i++) {
@@ -30,11 +24,18 @@ async function main() {
       // console.log(`from account: `, fromAccount);
 
       // console.log(`creating to account`);
-      const toAccount = await tkn.getOrCreateAssociatedAccountInfo(new PublicKey(w.wallet));
+      let toAccount: PublicKey;
+      if (config.createDestAccount) {
+        const temp = await tkn.getOrCreateAssociatedAccountInfo(new PublicKey(w.wallet));
+        toAccount = temp.address;
+      } else {
+        const temp = await tkn.getAccountInfo(new PublicKey(w.wallet));
+        toAccount = temp.address;
+      }
       // console.log(`to account: `, toAccount);
 
       // console.log(`sending`);
-      const res = await tkn.transfer(fromAccount.address, toAccount.address, currentKp.publicKey, [], w.amount);
+      const res = await tkn.transfer(fromAccount.address, toAccount, currentKp.publicKey, [], w.amount);
 
       console.log(`\tres:  ${res}`);
     } catch (err) {

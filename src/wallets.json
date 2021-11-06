@@ -1,12 +1,12 @@
 [
   {
-    "wallet": "CKif2cqNeWe7e7oV3P8YgKALNrynoVh3CmqHB9xjm9o9",
-    "amount": 1,
+    "wallet": "ENxKS2vjvCRJrKaonAK6qAyB6XPsQkbFwwPPk7VWyJbN",
+    "amount": 2,
     "token": "9mbnVJqaUj6nTcxtknHHVwc64smEKzAq7copV6T2ViMM"
   },
   {
-    "wallet": "ENxKS2vjvCRJrKaonAK6qAyB6XPsQkbFwwPPk7VWyJbN",
-    "amount": 1,
+    "wallet": "CKif2cqNeWe7e7oV3P8YgKALNrynoVh3CmqHB9xjm9o9",
+    "amount": 3,
     "token": "9mbnVJqaUj6nTcxtknHHVwc64smEKzAq7copV6T2ViMM"
   }
 ]
