@@ -20,22 +20,15 @@ async function main() {
       var tkn = new Token(connection, new PublicKey(w.token), TOKEN_PROGRAM_ID, currentKp);
 
       // console.log(`creating from account`);
-      const fromAccount = await tkn.getOrCreateAssociatedAccountInfo(currentKp.publicKey);
+      const fromAccount = await tkn.getAccountInfo(currentKp.publicKey);
       // console.log(`from account: `, fromAccount);
 
       // console.log(`creating to account`);
-      let toAccount: PublicKey;
-      if (config.createDestAccount) {
-        const temp = await tkn.getOrCreateAssociatedAccountInfo(new PublicKey(w.wallet));
-        toAccount = temp.address;
-      } else {
-        const temp = await tkn.getAccountInfo(new PublicKey(w.wallet));
-        toAccount = temp.address;
-      }
+      let toAccount = await tkn.getOrCreateAssociatedAccountInfo(new PublicKey(w.wallet));
       // console.log(`to account: `, toAccount);
 
       // console.log(`sending`);
-      const res = await tkn.transfer(fromAccount.address, toAccount, currentKp.publicKey, [], w.amount);
+      const res = await tkn.transfer(fromAccount.address, toAccount.address, currentKp.publicKey, [], w.amount);
 
       console.log(`\tres:  ${res}`);
     } catch (err) {

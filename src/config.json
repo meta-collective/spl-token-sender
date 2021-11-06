@@ -1,5 +1,4 @@
 {
   "secretKey": [1, 2, 3, 4],
-  "endpoint": "https://api.devnet.solana.com",
-  "createDestAccount": true
+  "endpoint": "https://api.devnet.solana.com"
 }
